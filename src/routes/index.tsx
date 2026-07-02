@@ -565,18 +565,33 @@ function Footer() {
 function Index() {
   useReveal();
   return (
-    <div className="animate-page-fade min-h-screen bg-[#090909] text-white">
-      <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <BannerStrip />
-        <Features />
-        <TokenInfo />
-        <Roadmap />
-        <FAQ />
-      </main>
-      <Footer />
+    <div className="animate-page-fade relative min-h-screen overflow-hidden bg-[#090909] text-white">
+      {/* Global Robinhood decorative watermarks */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <img
+          src={robinhoodLogo.url}
+          alt=""
+          className="absolute right-[-6rem] top-[52%] h-80 w-80 rotate-12 opacity-[0.04] blur-[2px]"
+        />
+        <img
+          src={robinhoodLogo.url}
+          alt=""
+          className="absolute left-[-5rem] top-[78%] h-64 w-64 -rotate-6 opacity-[0.035] blur-[1px]"
+        />
+      </div>
+      <div className="relative">
+        <Navbar />
+        <main>
+          <Hero />
+          <About />
+          <BannerStrip />
+          <Features />
+          <TokenInfo />
+          <Roadmap />
+          <FAQ />
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }
