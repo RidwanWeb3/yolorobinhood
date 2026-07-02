@@ -92,11 +92,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/" },
-      {
-        property: "og:image",
-        content:
-          "/__l5e/assets-v1/placeholder",
-      },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "YOLOROBINHOOD (YOLO)" },
       {
