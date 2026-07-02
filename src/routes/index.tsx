@@ -12,15 +12,15 @@ import {
   Plus,
   Minus,
 } from "lucide-react";
-import robinhoodLogo from "@/assets/robinhood_logo.png.asset.json";
-import yoloLogo from "@/assets/yolo_logo.jpg.asset.json";
-import yoloBanner from "@/assets/yolo_banner.jpg.asset.json";
+import robinhoodLogo from "@/assets/robinhood logo.png";
+import yoloLogo from "@/assets/YOLO logo.jpg";
+import yoloBanner from "@/assets/yolo banner.jpeg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { property: "og:image", content: yoloBanner.url },
-      { name: "twitter:image", content: yoloBanner.url },
+      { property: "og:image", content: yoloBanner },
+      { name: "twitter:image", content: yoloBanner },
     ],
     links: [{ rel: "canonical", href: "/" }],
   }),
@@ -73,7 +73,7 @@ function Navbar() {
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <a href="#top" className="flex items-center gap-2.5">
-          <img src={robinhoodLogo.url} alt="YOLOROBINHOOD" className="h-8 w-8 rounded-md" />
+          <img src={yoloLogo} alt="YOLOROBINHOOD" className="h-8 w-8 rounded-md" />
           <span className="text-sm font-semibold tracking-tight">YOLOROBINHOOD</span>
         </a>
         <nav className="hidden items-center gap-8 md:flex">
@@ -109,20 +109,20 @@ function Hero() {
       />
       <div aria-hidden className="pointer-events-none absolute inset-0 grid-bg" />
 
-      {/* Decorative Robinhood logo pattern */}
+      {/* Decorative YOLO logo pattern */}
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
         <img
-          src={robinhoodLogo.url}
+          src={yoloLogo}
           alt=""
           className="absolute -left-16 top-24 h-56 w-56 rotate-[-14deg] opacity-[0.05] blur-[1px] md:h-72 md:w-72"
         />
         <img
-          src={robinhoodLogo.url}
+          src={yoloLogo}
           alt=""
           className="absolute -right-20 bottom-10 h-72 w-72 rotate-[18deg] opacity-[0.06] blur-[1px] md:h-96 md:w-96"
         />
         <img
-          src={robinhoodLogo.url}
+          src={yoloLogo}
           alt=""
           className="absolute left-1/2 top-1/2 hidden h-40 w-40 -translate-x-1/2 -translate-y-1/2 rotate-[8deg] opacity-[0.035] lg:block"
         />
@@ -168,7 +168,7 @@ function Hero() {
               </span>
               <div className="inline-flex items-center gap-3 rounded-full border border-[var(--border-soft)] bg-white/[0.03] px-4 py-2">
                 <img
-                  src={robinhoodLogo.url}
+                  src={robinhoodLogo}
                   alt="Robinhood Chain"
                   className="h-6 w-6 rounded"
                 />
@@ -188,7 +188,7 @@ function Hero() {
             />
             <div className="animate-float relative flex h-full w-full items-center justify-center">
               <img
-                src={yoloLogo.url}
+                src={yoloLogo}
                 alt="YOLO token logo"
                 className="w-[78%] rounded-3xl shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] ring-1 ring-white/10"
               />
@@ -212,7 +212,7 @@ function BannerStrip() {
           className="reveal group relative overflow-hidden rounded-3xl border border-[var(--border-soft)] shadow-[0_40px_120px_-40px_rgba(204,255,0,0.25)]"
         >
           <img
-            src={yoloBanner.url}
+            src={yoloBanner}
             alt="YOLO — You Only Live Once"
             className="h-56 w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03] sm:h-72 md:h-96"
             loading="lazy"
@@ -500,7 +500,7 @@ function Footer() {
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <div className="flex items-center gap-2.5">
-              <img src={robinhoodLogo.url} alt="YOLOROBINHOOD" className="h-9 w-9 rounded-md" />
+              <img src={yoloLogo} alt="YOLOROBINHOOD" className="h-9 w-9 rounded-md" />
               <span className="text-sm font-semibold tracking-tight">YOLOROBINHOOD</span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-[var(--text-secondary)]">
@@ -536,20 +536,15 @@ function Footer() {
               Community
             </div>
             <div className="mt-4 flex gap-3">
-              {[
-                { Icon: Twitter, label: "Twitter" },
-                { Icon: Send, label: "Telegram" },
-                { Icon: MessageCircle, label: "Discord" },
-              ].map(({ Icon, label }) => (
-                <a
-                  key={label}
-                  href="#"
-                  aria-label={label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border-soft)] bg-white/[0.03] text-white/80 transition-all duration-200 hover:scale-105 hover:border-[#CCFF00]/40 hover:text-brand"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
+              <a
+                href="https://x.com/yolorobinhood"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="X"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border-soft)] bg-white/[0.03] text-white/80 transition-all duration-200 hover:scale-105 hover:border-[#CCFF00]/40 hover:text-brand"
+              >
+                <Twitter className="h-4 w-4" />
+              </a>
             </div>
           </div>
         </div>
@@ -566,17 +561,33 @@ function Index() {
   useReveal();
   return (
     <div className="animate-page-fade relative min-h-screen overflow-hidden bg-[#090909] text-white">
-      {/* Global Robinhood decorative watermarks */}
+      {/* Global decorative watermarks */}
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        {/* YOLO logo 1 */}
         <img
-          src={robinhoodLogo.url}
+          src={yoloLogo}
           alt=""
-          className="absolute right-[-6rem] top-[52%] h-80 w-80 rotate-12 opacity-[0.04] blur-[2px]"
+          className="absolute right-[-6rem] top-[52%] h-80 w-80 rotate-12 opacity-[0.04] blur-[2px] animate-float"
         />
+        {/* YOLO logo 2 */}
         <img
-          src={robinhoodLogo.url}
+          src={yoloLogo}
           alt=""
-          className="absolute left-[-5rem] top-[78%] h-64 w-64 -rotate-6 opacity-[0.035] blur-[1px]"
+          className="absolute left-[-5rem] top-[78%] h-64 w-64 -rotate-6 opacity-[0.035] blur-[1px] animate-float"
+          style={{ animationDelay: '2s' }}
+        />
+        {/* Robinhood logo 1 */}
+        <img
+          src={robinhoodLogo}
+          alt=""
+          className="absolute left-[10%] top-[15%] h-40 w-40 rotate-45 opacity-[0.03] blur-[1px] animate-spin-slow"
+        />
+        {/* Robinhood logo 2 */}
+        <img
+          src={robinhoodLogo}
+          alt=""
+          className="absolute right-[15%] bottom-[25%] h-56 w-56 -rotate-20 opacity-[0.035] blur-[1px] animate-spin-slow"
+          style={{ animationDelay: '3s', animationDirection: 'reverse' }}
         />
       </div>
       <div className="relative">
