@@ -570,6 +570,7 @@ function Index() {
       <main>
         <Hero />
         <About />
+        <BannerStrip />
         <Features />
         <TokenInfo />
         <Roadmap />
