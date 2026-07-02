@@ -109,6 +109,25 @@ function Hero() {
       />
       <div aria-hidden className="pointer-events-none absolute inset-0 grid-bg" />
 
+      {/* Decorative Robinhood logo pattern */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <img
+          src={robinhoodLogo.url}
+          alt=""
+          className="absolute -left-16 top-24 h-56 w-56 rotate-[-14deg] opacity-[0.05] blur-[1px] md:h-72 md:w-72"
+        />
+        <img
+          src={robinhoodLogo.url}
+          alt=""
+          className="absolute -right-20 bottom-10 h-72 w-72 rotate-[18deg] opacity-[0.06] blur-[1px] md:h-96 md:w-96"
+        />
+        <img
+          src={robinhoodLogo.url}
+          alt=""
+          className="absolute left-1/2 top-1/2 hidden h-40 w-40 -translate-x-1/2 -translate-y-1/2 rotate-[8deg] opacity-[0.035] lg:block"
+        />
+      </div>
+
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="grid items-center gap-16 lg:grid-cols-[1.15fr_1fr]">
           <div className="animate-fade-up text-center lg:text-left">
@@ -141,6 +160,21 @@ function Hero() {
                 Join Community
               </a>
             </div>
+
+            {/* Partner strip */}
+            <div className="mt-12 flex flex-col items-center gap-3 lg:items-start">
+              <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-[var(--text-secondary)]">
+                In partnership with
+              </span>
+              <div className="inline-flex items-center gap-3 rounded-full border border-[var(--border-soft)] bg-white/[0.03] px-4 py-2">
+                <img
+                  src={robinhoodLogo.url}
+                  alt="Robinhood Chain"
+                  className="h-6 w-6 rounded"
+                />
+                <span className="text-sm font-medium text-white/90">Robinhood Chain</span>
+              </div>
+            </div>
           </div>
 
           <div className="relative mx-auto aspect-square w-full max-w-md">
@@ -159,6 +193,45 @@ function Hero() {
                 className="w-[78%] rounded-3xl shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] ring-1 ring-white/10"
               />
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function BannerStrip() {
+  return (
+    <section
+      aria-label="YOLO banner"
+      className="relative border-t border-[var(--border-soft)]"
+    >
+      <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+        <div
+          data-reveal
+          className="reveal group relative overflow-hidden rounded-3xl border border-[var(--border-soft)] shadow-[0_40px_120px_-40px_rgba(204,255,0,0.25)]"
+        >
+          <img
+            src={yoloBanner.url}
+            alt="YOLO — You Only Live Once"
+            className="h-56 w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03] sm:h-72 md:h-96"
+            loading="lazy"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(9,9,9,0) 40%, rgba(9,9,9,0.85) 100%)",
+            }}
+          />
+          <div className="absolute inset-x-0 bottom-0 flex flex-col items-start gap-2 p-6 sm:p-10">
+            <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-brand">
+              YOLO / Robinhood Chain
+            </span>
+            <p className="max-w-xl text-lg font-semibold leading-snug text-white sm:text-2xl">
+              One token. One philosophy. You Only Live Once.
+            </p>
           </div>
         </div>
       </div>
@@ -492,17 +565,33 @@ function Footer() {
 function Index() {
   useReveal();
   return (
-    <div className="animate-page-fade min-h-screen bg-[#090909] text-white">
-      <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <Features />
-        <TokenInfo />
-        <Roadmap />
-        <FAQ />
-      </main>
-      <Footer />
+    <div className="animate-page-fade relative min-h-screen overflow-hidden bg-[#090909] text-white">
+      {/* Global Robinhood decorative watermarks */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <img
+          src={robinhoodLogo.url}
+          alt=""
+          className="absolute right-[-6rem] top-[52%] h-80 w-80 rotate-12 opacity-[0.04] blur-[2px]"
+        />
+        <img
+          src={robinhoodLogo.url}
+          alt=""
+          className="absolute left-[-5rem] top-[78%] h-64 w-64 -rotate-6 opacity-[0.035] blur-[1px]"
+        />
+      </div>
+      <div className="relative">
+        <Navbar />
+        <main>
+          <Hero />
+          <About />
+          <BannerStrip />
+          <Features />
+          <TokenInfo />
+          <Roadmap />
+          <FAQ />
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }
