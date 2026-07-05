@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import {
   Users,
@@ -59,6 +59,7 @@ function Navbar() {
     { href: "#about", label: "About" },
     { href: "#features", label: "Features" },
     { href: "#token", label: "Token" },
+    { href: "/staking", label: "Staking", isExternal: true },
     { href: "#roadmap", label: "Roadmap" },
     { href: "#faq", label: "FAQ" },
   ];
@@ -77,15 +78,25 @@ function Navbar() {
           <span className="text-sm font-semibold tracking-tight">YOLOROBINHOOD</span>
         </a>
         <nav className="hidden items-center gap-8 md:flex">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="text-sm text-[var(--text-secondary)] transition-colors hover:text-white"
-            >
-              {l.label}
-            </a>
-          ))}
+          {links.map((l) =>
+            l.isExternal ? (
+              <Link
+                key={l.href}
+                to={l.href}
+                className="text-sm text-[var(--text-secondary)] transition-colors hover:text-white"
+              >
+                {l.label}
+              </Link>
+            ) : (
+              <a
+                key={l.href}
+                href={l.href}
+                className="text-sm text-[var(--text-secondary)] transition-colors hover:text-white"
+              >
+                {l.label}
+              </a>
+            )
+          )}
         </nav>
         <a
           href="#buy"
@@ -517,16 +528,26 @@ function Footer() {
                 { href: "#about", label: "About" },
                 { href: "#features", label: "Features" },
                 { href: "#token", label: "Token" },
+                { href: "/staking", label: "Staking", isLink: true },
                 { href: "#roadmap", label: "Roadmap" },
                 { href: "#faq", label: "FAQ" },
               ].map((l) => (
                 <li key={l.href}>
-                  <a
-                    href={l.href}
-                    className="text-white/80 transition-colors hover:text-brand"
-                  >
-                    {l.label}
-                  </a>
+                  {l.isLink ? (
+                    <Link
+                      to={l.href}
+                      className="text-white/80 transition-colors hover:text-brand"
+                    >
+                      {l.label}
+                    </Link>
+                  ) : (
+                    <a
+                      href={l.href}
+                      className="text-white/80 transition-colors hover:text-brand"
+                    >
+                      {l.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
