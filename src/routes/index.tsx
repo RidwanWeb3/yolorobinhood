@@ -11,10 +11,15 @@ import {
   Send,
   Plus,
   Minus,
+  Lock,
+  TrendingUp,
+  Clock,
+  Globe,
 } from "lucide-react";
 import robinhoodLogo from "@/assets/robinhood logo.png";
 import yoloLogo from "@/assets/YOLO logo.jpg";
 import yoloBanner from "@/assets/yolo banner.jpeg";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -48,6 +53,9 @@ function useReveal() {
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
@@ -56,12 +64,13 @@ function Navbar() {
   }, []);
 
   const links = [
-    { href: "#about", label: "About" },
-    { href: "#features", label: "Features" },
-    { href: "#token", label: "Token" },
-    { href: "/staking", label: "Staking", isExternal: true },
-    { href: "#roadmap", label: "Roadmap" },
-    { href: "#faq", label: "FAQ" },
+    { href: "#about", label: t("nav.about") },
+    { href: "#features", label: t("nav.features") },
+    { href: "#token", label: t("nav.token") },
+    { href: "#staking", label: t("nav.staking") },
+    { href: "/livestream", label: t("nav.live"), isExternal: true },
+    { href: "#roadmap", label: t("nav.roadmap") },
+    { href: "#faq", label: t("nav.faq") },
   ];
 
   return (
@@ -72,12 +81,14 @@ function Navbar() {
           : "border-b border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
         <a href="#top" className="flex items-center gap-2.5">
           <img src={yoloLogo} alt="YOLOROBINHOOD" className="h-8 w-8 rounded-md" />
           <span className="text-sm font-semibold tracking-tight">YOLOROBINHOOD</span>
         </a>
-        <nav className="hidden items-center gap-8 md:flex">
+        
+        {/* Desktop Nav */}
+        <nav className="hidden items-center gap-6 lg:flex">
           {links.map((l) =>
             l.isExternal ? (
               <Link
@@ -98,19 +109,75 @@ function Navbar() {
             )
           )}
         </nav>
-        <a
-          href="#buy"
-          className="group inline-flex items-center gap-1.5 rounded-full bg-[#CCFF00] px-4 py-2 text-sm font-semibold text-black transition-transform duration-200 hover:scale-[1.03]"
-        >
-          Buy YOLO
-          <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        </a>
+
+        {/* Right Actions */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setLanguage(language === "en" ? "zh" : "en")}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border-soft)] bg-white/[0.02] text-white/80 transition-all hover:border-[#CCFF00]/40 hover:text-brand"
+          >
+            <Globe className="h-4 w-4" />
+          </button>
+          <a
+            href="#token"
+            className="group hidden items-center gap-1.5 rounded-full bg-[#CCFF00] px-4 py-2 text-sm font-semibold text-black transition-transform duration-200 hover:scale-[1.03] sm:flex"
+          >
+            {t("nav.buy")}
+            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
+          
+          {/* Mobile Menu Button */}
+          <button 
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border-soft)] bg-white/[0.02] text-white/80 lg:hidden"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Nav */}
+      {mobileMenuOpen && (
+        <div className="border-t border-[var(--border-soft)] bg-[#090909]/95 backdrop-blur-xl p-4 lg:hidden">
+          <nav className="flex flex-col gap-3">
+            {links.map((l) =>
+              l.isExternal ? (
+                <Link
+                  key={l.href}
+                  to={l.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="py-2 text-sm text-[var(--text-secondary)] transition-colors hover:text-white"
+                >
+                  {l.label}
+                </Link>
+              ) : (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="py-2 text-sm text-[var(--text-secondary)] transition-colors hover:text-white"
+                >
+                  {l.label}
+                </a>
+              )
+            )}
+            <a
+              href="#token"
+              onClick={() => setMobileMenuOpen(false)}
+              className="mt-2 flex items-center justify-center gap-1.5 rounded-full bg-[#CCFF00] px-4 py-2 text-sm font-semibold text-black transition-transform duration-200 hover:scale-[1.03]"
+            >
+              {t("nav.buy")}
+              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
 
 function Hero() {
+  const { t } = useLanguage();
   return (
     <section id="top" className="relative overflow-hidden pt-40 pb-28 md:pt-48 md:pb-36">
       <div
@@ -139,21 +206,20 @@ function Hero() {
         />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-6">
-        <div className="grid items-center gap-16 lg:grid-cols-[1.15fr_1fr]">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_1fr]">
           <div className="animate-fade-up text-center lg:text-left">
             <span className="inline-flex items-center gap-2 rounded-full border border-[var(--border-soft)] bg-white/5 px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--text-secondary)]">
               <span className="h-1.5 w-1.5 rounded-full bg-[#CCFF00] shadow-[0_0_10px_#CCFF00]" />
-              Built on Robinhood Chain
+              {t("hero.badge")}
             </span>
-            <h1 className="mt-6 text-5xl font-bold leading-[0.95] tracking-tight sm:text-6xl md:text-7xl lg:text-[5.25rem]">
-              You only
+            <h1 className="mt-6 text-4xl font-bold leading-[0.95] tracking-tight sm:text-5xl md:text-6xl lg:text-[5.25rem]">
+              {t("hero.title1")}
               <br />
-              live <span className="text-brand">once.</span>
+              {t("hero.title2")} <span className="text-brand">{t("hero.title3")}</span>
             </h1>
             <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-[var(--text-secondary)] sm:text-lg lg:mx-0">
-              YOLOROBINHOOD is a community-driven cryptocurrency built for people who believe
-              opportunity belongs to those willing to take action.
+              {t("hero.subtitle")}
             </p>
             <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
               <a
@@ -161,21 +227,21 @@ function Hero() {
                 href="#token"
                 className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#CCFF00] px-6 py-3.5 text-sm font-semibold text-black transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_40px_-8px_#CCFF00] sm:w-auto"
               >
-                Buy YOLO
+                {t("nav.buy")}
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
               <a
                 href="#community"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-[var(--border-soft)] bg-white/[0.03] px-6 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.03] hover:bg-white/[0.06] sm:w-auto"
               >
-                Join Community
+                {t("hero.join")}
               </a>
             </div>
 
             {/* Partner strip */}
             <div className="mt-12 flex flex-col items-center gap-3 lg:items-start">
               <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-[var(--text-secondary)]">
-                In partnership with
+                {t("partner.title")}
               </span>
               <div className="inline-flex items-center gap-3 rounded-full border border-[var(--border-soft)] bg-white/[0.03] px-4 py-2">
                 <img
@@ -183,7 +249,7 @@ function Hero() {
                   alt="Robinhood Chain"
                   className="h-6 w-6 rounded"
                 />
-                <span className="text-sm font-medium text-white/90">Robinhood Chain</span>
+                <span className="text-sm font-medium text-white/90">{t("partner.name")}</span>
               </div>
             </div>
           </div>
@@ -212,12 +278,13 @@ function Hero() {
 }
 
 function BannerStrip() {
+  const { t } = useLanguage();
   return (
     <section
       aria-label="YOLO banner"
       className="relative border-t border-[var(--border-soft)]"
     >
-      <div className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-16 md:py-24">
         <div
           data-reveal
           className="reveal group relative overflow-hidden rounded-3xl border border-[var(--border-soft)] shadow-[0_40px_120px_-40px_rgba(204,255,0,0.25)]"
@@ -236,12 +303,12 @@ function BannerStrip() {
                 "linear-gradient(180deg, rgba(9,9,9,0) 40%, rgba(9,9,9,0.85) 100%)",
             }}
           />
-          <div className="absolute inset-x-0 bottom-0 flex flex-col items-start gap-2 p-6 sm:p-10">
+          <div className="absolute inset-x-0 bottom-0 flex flex-col items-start gap-2 p-4 sm:p-10">
             <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-brand">
-              YOLO / Robinhood Chain
+              {t("banner.badge")}
             </span>
             <p className="max-w-xl text-lg font-semibold leading-snug text-white sm:text-2xl">
-              One token. One philosophy. You Only Live Once.
+              {t("banner.text")}
             </p>
           </div>
         </div>
@@ -264,8 +331,8 @@ function Section({
   children?: React.ReactNode;
 }) {
   return (
-    <section id={id} className="border-t border-[var(--border-soft)] py-28 md:py-32">
-      <div className="mx-auto max-w-7xl px-6">
+    <section id={id} className="border-t border-[var(--border-soft)] py-20 md:py-28 lg:py-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div data-reveal className="reveal mx-auto max-w-2xl text-center">
           <span className="text-xs font-medium uppercase tracking-[0.2em] text-brand">
             {eyebrow}
@@ -286,50 +353,44 @@ function Section({
 }
 
 function About() {
+  const { t } = useLanguage();
   return (
     <Section
       id="about"
-      eyebrow="About"
+      eyebrow={t("about.title")}
       title={<>What is YOLOROBINHOOD?</>}
     >
       <div data-reveal className="reveal mx-auto max-w-3xl space-y-6 text-center text-lg leading-relaxed text-[var(--text-secondary)]">
+        <p>{t("about.p1")}</p>
         <p>
-          YOLOROBINHOOD is a community-first digital asset inspired by the philosophy that life
-          rewards bold decisions.
+          {t("about.p2")} <span className="font-medium text-white">{t("about.p3")}</span>
         </p>
-        <p>
-          Built on Robinhood Chain, YOLO combines modern branding, transparent tokenomics, and a
-          long-term ecosystem vision into one simple idea:{" "}
-          <span className="font-medium text-white">You Only Live Once.</span>
-        </p>
-        <p>
-          The project exists to build a strong community around innovation, confidence, and
-          financial freedom while maintaining a clean and professional identity.
-        </p>
+        <p>{t("about.p4")}</p>
       </div>
     </Section>
   );
 }
 
 const features = [
-  { icon: Users, title: "Community Driven", desc: "Built together with holders." },
-  { icon: Zap, title: "Robinhood Chain", desc: "Fast and efficient blockchain." },
-  { icon: ShieldCheck, title: "Secure", desc: "Transparent smart contract." },
-  { icon: Compass, title: "Long-Term Vision", desc: "Focused on sustainable ecosystem growth." },
+  { icon: Users, key: "community" },
+  { icon: Zap, key: "robinhood" },
+  { icon: ShieldCheck, key: "secure" },
+  { icon: Compass, key: "vision" },
 ];
 
 function Features() {
+  const { t } = useLanguage();
   return (
     <Section
       id="features"
-      eyebrow="Features"
-      title="Designed for the long run."
-      description="Four principles guide every decision behind YOLO."
+      eyebrow={t("features.badge")}
+      title={t("features.title")}
+      description={t("features.subtitle")}
     >
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {features.map((f, i) => (
           <div
-            key={f.title}
+            key={f.key}
             data-reveal
             className="reveal glass-card glass-card-hover p-7"
             style={{ transitionDelay: `${i * 60}ms` }}
@@ -337,8 +398,10 @@ function Features() {
             <div className="mb-6 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--border-soft)] bg-white/[0.04]">
               <f.icon className="h-5 w-5 text-brand" />
             </div>
-            <h3 className="text-lg font-semibold">{f.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-[var(--text-secondary)]">{f.desc}</p>
+            <h3 className="text-lg font-semibold">{t(`features.${f.key}.title`)}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--text-secondary)]">
+              {t(`features.${f.key}.desc`)}
+            </p>
           </div>
         ))}
       </div>
@@ -347,35 +410,38 @@ function Features() {
 }
 
 const tokenInfo = [
-  { label: "Token Name", value: "YOLOROBINHOOD" },
-  { label: "Ticker", value: "YOLO" },
-  { label: "Network", value: "Robinhood Chain" },
-  { label: "Contract", value: "Coming Soon" },
-  { label: "Tax", value: "0 / 0" },
-  { label: "Liquidity", value: "Locked" },
-  { label: "Ownership", value: "Renounced" },
+  { key: "name" },
+  { key: "ticker" },
+  { key: "network" },
+  { key: "contract" },
+  { key: "tax" },
+  { key: "liquidity" },
+  { key: "ownership" },
 ];
 
 function TokenInfo() {
+  const { t } = useLanguage();
   return (
     <Section
       id="token"
-      eyebrow="Token"
-      title="Token Information"
-      description="Transparent by design. Everything you need to know about YOLO."
+      eyebrow={t("token.badge")}
+      title={t("token.title")}
+      description={t("token.subtitle")}
     >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {tokenInfo.map((t, i) => (
+        {tokenInfo.map((tkn, i) => (
           <div
-            key={t.label}
+            key={tkn.key}
             data-reveal
             className="reveal glass-card p-6"
             style={{ transitionDelay: `${i * 40}ms` }}
           >
             <div className="text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-secondary)]">
-              {t.label}
+              {t(`token.${tkn.key}.label`)}
             </div>
-            <div className="mt-3 text-lg font-semibold text-white">{t.value}</div>
+            <div className="mt-3 text-lg font-semibold text-white">
+              {t(`token.${tkn.key}.value`)}
+            </div>
           </div>
         ))}
       </div>
@@ -383,54 +449,215 @@ function TokenInfo() {
   );
 }
 
+const stakingPlans = [
+  { key: "plan1", featured: false },
+  { key: "plan2", featured: true },
+  { key: "plan3", featured: false },
+];
+
+function StakingSection() {
+  const { t } = useLanguage();
+  const [selectedPlan, setSelectedPlan] = useState(1);
+  const [amount, setAmount] = useState("1000");
+
+  return (
+    <Section
+      id="staking"
+      eyebrow={t("staking.badge")}
+      title={t("staking.title")}
+      description={t("staking.subtitle")}
+    >
+      <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr] items-start">
+        {/* Plans */}
+        <div className="space-y-6">
+          <div className="grid gap-5 sm:grid-cols-3">
+            {stakingPlans.map((plan, i) => (
+              <button
+                key={plan.key}
+                onClick={() => setSelectedPlan(i)}
+                className={`text-left p-7 transition-all duration-300 ${
+                  selectedPlan === i
+                    ? "border-[#CCFF00]/50 bg-[#CCFF00]/5 scale-[1.02]"
+                    : "border-[var(--border-soft)] bg-white/[0.02] hover:border-white/10"
+                } rounded-2xl border`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-medium uppercase tracking-[0.2em] text-brand">
+                    {t(`staking.${plan.key}.badge`)}
+                  </span>
+                  {plan.featured && (
+                    <span className="text-[10px] font-semibold text-black bg-[#CCFF00] px-2 py-0.5 rounded-full">
+                      BEST
+                    </span>
+                  )}
+                </div>
+                <h3 className="mt-4 text-2xl font-semibold">{t(`staking.${plan.key}.duration`)}</h3>
+                <div className="mt-2">
+                  <span className="text-4xl font-bold text-brand">{plan.key === "plan1" ? "24.9" : plan.key === "plan2" ? "59.9" : "89.9"}%</span>
+                  <span className="text-[var(--text-secondary)] ml-1">APY</span>
+                </div>
+                <ul className="mt-6 space-y-2">
+                  {[1, 2, 3].map((j) => (
+                    <li key={j} className="flex items-center gap-3 text-sm text-[var(--text-secondary)]">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#CCFF00]" />
+                      {t(`staking.${plan.key}.f${j}`)}
+                    </li>
+                  ))}
+                </ul>
+              </button>
+            ))}
+          </div>
+
+          {/* Stats */}
+          <div className="grid gap-4 sm:grid-cols-3">
+            {[
+              { icon: Lock, key: "stat1" },
+              { icon: TrendingUp, key: "stat2" },
+              { icon: Clock, key: "stat3" },
+            ].map((stat, i) => (
+              <div
+                key={stat.key}
+                data-reveal
+                className="reveal glass-card p-6"
+                style={{ transitionDelay: `${i * 40}ms` }}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[var(--border-soft)] bg-white/[0.04]">
+                    <stat.icon className="h-5 w-5 text-brand" />
+                  </div>
+                </div>
+                <div className="mt-4 text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-secondary)]">
+                  {t(`staking.${stat.key}.label`)}
+                </div>
+                <div className="mt-2 text-xl font-semibold text-white">
+                  {t(`staking.${stat.key}.value`)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Staking Form */}
+        <div className="sticky top-24">
+          <div className="glass-card p-7">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#CCFF00]/20">
+                <img src={yoloLogo} alt="YOLO" className="h-8 w-8 rounded-md" />
+              </div>
+              <div>
+                <p className="text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-secondary)]">
+                  YOLO
+                </p>
+                <p className="font-semibold">YOLOROBINHOOD</p>
+              </div>
+              <div className="ml-auto text-right">
+                <p className="text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-secondary)]">
+                  {t("staking.form.balance")}
+                </p>
+                <p className="font-semibold">10,000 YOLO</p>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <label className="text-xs font-medium uppercase tracking-[0.14em] text-[var(--text-secondary)]">
+                {t("staking.form.amount")}
+              </label>
+              <div className="mt-2 flex items-center gap-3 rounded-2xl border border-[var(--border-soft)] bg-white/[0.02] p-4">
+                <input
+                  type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  className="w-full bg-transparent text-xl font-semibold outline-none"
+                  placeholder="0"
+                />
+                <div className="flex gap-1">
+                  {[25, 50, 75, 100].map((p) => (
+                    <button
+                      key={p}
+                      onClick={() => setAmount((10000 * p / 100).toString())}
+                      className="text-xs font-medium text-brand bg-brand/10 px-2 py-1 rounded-lg hover:bg-brand/20 transition-colors"
+                    >
+                      {p}%
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-[var(--text-secondary)]">{t("staking.form.duration")}</span>
+                <span className="text-sm font-semibold">
+                  {t(`staking.${stakingPlans[selectedPlan].key}.duration`)}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-[var(--text-secondary)]">{t("staking.form.apy")}</span>
+                <span className="text-sm font-semibold text-brand">
+                  {selectedPlan === 0 ? "24.9" : selectedPlan === 1 ? "59.9" : "89.9"}%
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-[var(--text-secondary)]">{t("staking.form.est")}</span>
+                <span className="text-sm font-semibold">
+                  {(Number(amount) * (selectedPlan === 0 ? 0.249 : selectedPlan === 1 ? 0.599 : 0.899)).toFixed(2)} YOLO
+                </span>
+              </div>
+            </div>
+
+            <button
+              disabled
+              className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-gray-700 px-6 py-3.5 text-sm font-semibold text-white cursor-not-allowed"
+            >
+              <Lock className="h-4 w-4" />
+              {t("staking.form.button")}
+            </button>
+
+            <p className="mt-4 text-center text-xs text-[var(--text-secondary)]">
+              {t("staking.form.note")}
+            </p>
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
 const phases = [
-  {
-    phase: "Phase 1",
-    title: "Foundation",
-    items: ["Brand Launch", "Website", "Community", "Socials"],
-  },
-  {
-    phase: "Phase 2",
-    title: "Expansion",
-    items: ["DEX Listing", "Marketing", "Partnerships"],
-  },
-  {
-    phase: "Phase 3",
-    title: "Ecosystem",
-    items: ["Utilities", "Ecosystem", "Growth"],
-  },
+  { key: "p1", items: [1, 2, 3, 4] },
+  { key: "p2", items: [1, 2, 3] },
+  { key: "p3", items: [1, 2, 3] },
 ];
 
 function Roadmap() {
+  const { t } = useLanguage();
   return (
     <Section
       id="roadmap"
-      eyebrow="Roadmap"
-      title="A path forward."
-      description="Deliberate steps toward a durable ecosystem."
+      eyebrow={t("roadmap.badge")}
+      title={t("roadmap.title")}
+      description={t("roadmap.subtitle")}
     >
       <div className="grid gap-5 md:grid-cols-3">
-        {phases.map((p, i) => (
+        {phases.map((phase, i) => (
           <div
-            key={p.phase}
+            key={phase.key}
             data-reveal
             className="reveal glass-card glass-card-hover p-8"
             style={{ transitionDelay: `${i * 80}ms` }}
           >
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium uppercase tracking-[0.2em] text-brand">
-                {p.phase}
+                {t(`roadmap.${phase.key}.phase`)}
               </span>
-              <span className="text-xs text-[var(--text-secondary)]">
-                0{i + 1}
-              </span>
+              <span className="text-xs text-[var(--text-secondary)]">0{i + 1}</span>
             </div>
-            <h3 className="mt-4 text-2xl font-semibold">{p.title}</h3>
+            <h3 className="mt-4 text-2xl font-semibold">{t(`roadmap.${phase.key}.title`)}</h3>
             <ul className="mt-6 space-y-3">
-              {p.items.map((it) => (
+              {phase.items.map((it) => (
                 <li key={it} className="flex items-center gap-3 text-sm text-[var(--text-secondary)]">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#CCFF00]" />
-                  {it}
+                  {t(`roadmap.${phase.key}.i${it}`)}
                 </li>
               ))}
             </ul>
@@ -441,40 +668,24 @@ function Roadmap() {
   );
 }
 
-const faqs = [
-  {
-    q: "What is YOLO?",
-    a: "YOLO is the native token of YOLOROBINHOOD — a community-first digital asset on Robinhood Chain built around the philosophy that opportunity belongs to those willing to take action.",
-  },
-  {
-    q: "How to buy?",
-    a: "The contract will be published at launch. Once live, you'll be able to swap for YOLO on supported Robinhood Chain DEXs. Follow our socials for the official announcement.",
-  },
-  {
-    q: "What chain is it on?",
-    a: "YOLO is built on Robinhood Chain — a fast, efficient blockchain designed for low fees and quick confirmations.",
-  },
-  {
-    q: "Where is the contract?",
-    a: "The contract address is Coming Soon. It will be published exclusively through our official channels to prevent scams.",
-  },
-];
+const faqs = [1, 2, 3, 4];
 
 function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
+  const { t } = useLanguage();
   return (
-    <Section id="faq" eyebrow="FAQ" title="Frequently asked.">
+    <Section id="faq" eyebrow={t("faq.title")} title={<></>}>
       <div className="mx-auto max-w-3xl divide-y divide-[var(--border-soft)] rounded-2xl border border-[var(--border-soft)] bg-white/[0.02]">
         {faqs.map((f, i) => {
           const isOpen = open === i;
           return (
-            <div key={f.q} data-reveal className="reveal">
+            <div key={f} data-reveal className="reveal">
               <button
                 onClick={() => setOpen(isOpen ? null : i)}
                 className="flex w-full items-center justify-between gap-6 px-6 py-6 text-left transition-colors hover:bg-white/[0.02]"
                 aria-expanded={isOpen}
               >
-                <span className="text-base font-medium text-white sm:text-lg">{f.q}</span>
+                <span className="text-base font-medium text-white sm:text-lg">{t(`faq.q${f}`)}</span>
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--border-soft)] bg-white/[0.03]">
                   {isOpen ? (
                     <Minus className="h-4 w-4 text-brand" />
@@ -489,7 +700,7 @@ function FAQ() {
               >
                 <div className="min-h-0">
                   <p className="px-6 pb-6 text-sm leading-relaxed text-[var(--text-secondary)] sm:text-base">
-                    {f.a}
+                    {t(`faq.a${f}`)}
                   </p>
                 </div>
               </div>
@@ -502,12 +713,13 @@ function FAQ() {
 }
 
 function Footer() {
+  const { t } = useLanguage();
   return (
     <footer
       id="community"
       className="border-t border-[var(--border-soft)] py-16"
     >
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <div className="flex items-center gap-2.5">
@@ -515,22 +727,22 @@ function Footer() {
               <span className="text-sm font-semibold tracking-tight">YOLOROBINHOOD</span>
             </div>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-[var(--text-secondary)]">
-              A community-driven cryptocurrency on Robinhood Chain. Built for people who believe
-              opportunity belongs to those willing to take action.
+              {t("footer.desc")}
             </p>
           </div>
           <div>
             <div className="text-xs font-medium uppercase tracking-[0.16em] text-[var(--text-secondary)]">
-              Navigate
+              {t("footer.navigate")}
             </div>
             <ul className="mt-4 space-y-3 text-sm">
               {[
-                { href: "#about", label: "About" },
-                { href: "#features", label: "Features" },
-                { href: "#token", label: "Token" },
-                { href: "/staking", label: "Staking", isLink: true },
-                { href: "#roadmap", label: "Roadmap" },
-                { href: "#faq", label: "FAQ" },
+                { href: "#about", label: t("nav.about") },
+                { href: "#features", label: t("nav.features") },
+                { href: "#token", label: t("nav.token") },
+                { href: "#staking", label: t("nav.staking") },
+                { href: "/livestream", label: t("nav.live"), isLink: true },
+                { href: "#roadmap", label: t("nav.roadmap") },
+                { href: "#faq", label: t("nav.faq") },
               ].map((l) => (
                 <li key={l.href}>
                   {l.isLink ? (
@@ -554,7 +766,7 @@ function Footer() {
           </div>
           <div>
             <div className="text-xs font-medium uppercase tracking-[0.16em] text-[var(--text-secondary)]">
-              Community
+              {t("footer.community")}
             </div>
             <div className="mt-4 flex gap-3">
               <a
@@ -570,8 +782,8 @@ function Footer() {
           </div>
         </div>
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-[var(--border-soft)] pt-8 text-xs text-[var(--text-secondary)] sm:flex-row">
-          <span>© {new Date().getFullYear()} YOLOROBINHOOD. All rights reserved.</span>
-          <span className="tracking-[0.2em] uppercase">You Only Live Once.</span>
+          <span>{t("footer.copyright")}</span>
+          <span className="tracking-[0.2em] uppercase">{t("footer.tagline")}</span>
         </div>
       </div>
     </footer>
@@ -619,6 +831,7 @@ function Index() {
           <BannerStrip />
           <Features />
           <TokenInfo />
+          <StakingSection />
           <Roadmap />
           <FAQ />
         </main>

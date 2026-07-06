@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { LanguageProvider, useLanguage } from "../contexts/LanguageContext";
 
 function NotFoundComponent() {
   return (
@@ -116,9 +117,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
-function RootShell({ children }: { children: ReactNode }) {
+function RootShellContent({ children }: { children: ReactNode }) {
+  const { language } = useLanguage();
   return (
-    <html lang="en">
+    <html lang={language}>
       <head>
         <HeadContent />
       </head>
@@ -127,6 +129,14 @@ function RootShell({ children }: { children: ReactNode }) {
         <Scripts />
       </body>
     </html>
+  );
+}
+
+function RootShell({ children }: { children: ReactNode }) {
+  return (
+    <LanguageProvider>
+      <RootShellContent>{children}</RootShellContent>
+    </LanguageProvider>
   );
 }
 

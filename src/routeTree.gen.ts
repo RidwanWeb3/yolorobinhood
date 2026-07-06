@@ -9,12 +9,12 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as StakingRouteImport } from './routes/staking'
+import { Route as LivestreamRouteImport } from './routes/livestream'
 import { Route as IndexRouteImport } from './routes/index'
 
-const StakingRoute = StakingRouteImport.update({
-  id: '/staking',
-  path: '/staking',
+const LivestreamRoute = LivestreamRouteImport.update({
+  id: '/livestream',
+  path: '/livestream',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,37 +25,37 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/staking': typeof StakingRoute
+  '/livestream': typeof LivestreamRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/staking': typeof StakingRoute
+  '/livestream': typeof LivestreamRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/staking': typeof StakingRoute
+  '/livestream': typeof LivestreamRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/staking'
+  fullPaths: '/' | '/livestream'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/staking'
-  id: '__root__' | '/' | '/staking'
+  to: '/' | '/livestream'
+  id: '__root__' | '/' | '/livestream'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  StakingRoute: typeof StakingRoute
+  LivestreamRoute: typeof LivestreamRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/staking': {
-      id: '/staking'
-      path: '/staking'
-      fullPath: '/staking'
-      preLoaderRoute: typeof StakingRouteImport
+    '/livestream': {
+      id: '/livestream'
+      path: '/livestream'
+      fullPath: '/livestream'
+      preLoaderRoute: typeof LivestreamRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,7 +70,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  StakingRoute: StakingRoute,
+  LivestreamRoute: LivestreamRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
