@@ -15,7 +15,6 @@ import {
   TrendingUp,
   Clock,
   Globe,
-  Telegram,
 } from "lucide-react";
 import robinhoodLogo from "@/assets/robinhood logo.png";
 import yoloLogo from "@/assets/YOLO logo.jpg";
@@ -786,7 +785,7 @@ function Footer() {
                 aria-label="Telegram"
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border-soft)] bg-white/[0.03] text-white/80 transition-all duration-200 hover:scale-105 hover:border-[#CCFF00]/40 hover:text-brand"
               >
-                <Telegram className="h-4 w-4" />
+                <Send className="h-4 w-4" />
               </a>
             </div>
           </div>
