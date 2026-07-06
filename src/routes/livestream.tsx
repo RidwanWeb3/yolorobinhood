@@ -570,7 +570,7 @@ function LiveFooter() {
             </div>
             <div className="mt-4 flex gap-3">
               <a
-                href="https://x.com/Yolo_robinhood"
+                href="https://x.com/Yolo_Robinhood_"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="X"
