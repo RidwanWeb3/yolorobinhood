@@ -15,6 +15,7 @@ import {
   TrendingUp,
   Clock,
   Globe,
+  BarChart3,
 } from "lucide-react";
 import robinhoodLogo from "@/assets/robinhood logo.png";
 import yoloLogo from "@/assets/YOLO logo.jpg";
@@ -119,7 +120,18 @@ function Navbar() {
             <Globe className="h-4 w-4" />
           </button>
           <a
-            href="#token"
+            href="https://dexscreener.com/robinhood/0x6d2d5baf9adcf4ed9551ef1e8c6ebd80bad1d2fc"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group hidden items-center gap-1.5 rounded-full border border-[var(--border-soft)] bg-white/[0.02] px-4 py-2 text-sm font-semibold text-white transition-transform duration-200 hover:scale-[1.03] hover:bg-white/[0.06] sm:flex"
+          >
+            <BarChart3 className="h-4 w-4" />
+            Chart
+          </a>
+          <a
+            href="https://fun.noxa.fi/robinhood/token/0xb8e3f6a6e3bfd5bb965cc28a2dd7f2e5b7c802fb"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group hidden items-center gap-1.5 rounded-full bg-[#CCFF00] px-4 py-2 text-sm font-semibold text-black transition-transform duration-200 hover:scale-[1.03] sm:flex"
           >
             {t("nav.buy")}
@@ -224,11 +236,22 @@ function Hero() {
             <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
               <a
                 id="buy"
-                href="#token"
+                href="https://fun.noxa.fi/robinhood/token/0xb8e3f6a6e3bfd5bb965cc28a2dd7f2e5b7c802fb"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#CCFF00] px-6 py-3.5 text-sm font-semibold text-black transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_40px_-8px_#CCFF00] sm:w-auto"
               >
                 {t("nav.buy")}
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+              <a
+                href="https://dexscreener.com/robinhood/0x6d2d5baf9adcf4ed9551ef1e8c6ebd80bad1d2fc"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-[var(--border-soft)] bg-white/[0.03] px-6 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.03] hover:bg-white/[0.06] sm:w-auto"
+              >
+                <BarChart3 className="h-4 w-4" />
+                Chart
               </a>
               <a
                 href="#community"
