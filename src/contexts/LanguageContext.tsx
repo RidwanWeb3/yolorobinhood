@@ -387,12 +387,19 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>(() => {
-    const saved = localStorage.getItem("language");
-    return (saved as Language) || "en";
+    // Check if we're in a browser environment
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("language");
+      return (saved as Language) || "en";
+    }
+    return "en";
   });
 
   useEffect(() => {
-    localStorage.setItem("language", language);
+    // Only access localStorage on the client
+    if (typeof window !== "undefined") {
+      localStorage.setItem("language", language);
+    }
   }, [language]);
 
   const t = (key: string): string => {
